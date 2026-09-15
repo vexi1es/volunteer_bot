@@ -22,6 +22,23 @@ sudo systemctl start volunteer-bot
 
 Done. Nothing else to do — it runs on its own from here.
 
+## Second instance (e.g. the main course "Osnova")
+
+The same binary can run as a **second, fully separate bot** — its own token,
+its own database, its own volunteer group — for another program. One command,
+with an instance name:
+
+```bash
+sudo bash install.sh osnova
+sudo nano /opt/volunteer-bot-osnova/.env    # its own BOT_TOKEN etc.
+sudo systemctl start volunteer-bot-osnova
+```
+
+That's it. Both instances update themselves from the same releases. The
+generated `.env` already has `CONTINUOUS=1` (open-ended program, no two-week
+auto-finish) and `MAX_DAILY_HOURS=6`; the owner can change any of it later from
+the bot itself.
+
 ## After that — nothing
 
 - Crash, error, or server reboot → it comes back up by itself.
@@ -40,7 +57,7 @@ sudo systemctl stop volunteer-bot     # stop
 ## Uninstall
 
 ```bash
-sudo systemctl disable --now volunteer-bot
+sudo systemctl disable --now volunteer-bot          # or volunteer-bot-osnova for a named instance
 sudo rm -f /etc/systemd/system/volunteer-bot.service
 sudo systemctl daemon-reload
 sudo rm -rf /opt/volunteer-bot
